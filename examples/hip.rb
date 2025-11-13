@@ -74,3 +74,19 @@ live_loop :moody_melody do
   play :e4, release: 0.7
   sleep 0.5
 end
+
+live_loop :chord_stabs do
+  use_synth :saw
+  use_synth_defaults release: 0.3, cutoff: 90, amp: 1.2
+
+  # Punchy chord stabs on beats 2 and 4
+  sleep 1
+  play_chord [:e3, :g3, :b3, :d4], release: 0.25
+  sleep 1
+
+  sleep 0.5
+  play_chord [:e3, :g3, :b3, :d4], release: 0.2, amp: 0.8
+  sleep 0.5
+  play_chord [:a3, :c4, :e4, :g4], release: 0.25
+  sleep 1
+end

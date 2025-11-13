@@ -219,6 +219,9 @@ lerna-debug.log*
 *.tsbuildinfo
 .yarn-integrity
 
+# Test artifacts
+test/fixtures/test-home/
+
 # macOS
 .DS_Store
 .AppleDouble

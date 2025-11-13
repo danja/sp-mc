@@ -15,7 +15,7 @@ This is a Node.js port of the Python `mcp-sonic-pi` server, with direct OSC comm
 ## Installation
 
 ```bash
-cd /home/danny/github/sp/mcp
+cd /home/danny/github/sp
 npm install
 ```
 
@@ -118,7 +118,7 @@ If Sonic Pi is using a non-standard port:
 - `server.js` - Main MCP server implementation
 - `sonic-pi-client.js` - OSC communication layer
 - `log-parser.js` - Sonic Pi log file parser
-- `package.json` - Dependencies and metadata
+- `../package.json` - Dependencies and metadata (at repository root)
 
 ### Testing
 

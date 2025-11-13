@@ -3,9 +3,14 @@
   "version": "0.2.0",
   "description": "MCP server for controlling Sonic Pi via OSC",
   "type": "module",
-  "main": "server.js",
+  "main": "mcp/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node mcp/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:mock": "USE_MOCK_SONIC_PI=true vitest run",
+    "test:real": "USE_MOCK_SONIC_PI=false vitest run"
   },
   "keywords": [
     "sonic-pi",
@@ -18,5 +23,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
     "osc": "^2.4.5"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
   }
 }

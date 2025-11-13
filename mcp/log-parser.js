@@ -6,13 +6,22 @@ import path from 'path';
  * Parse Sonic Pi log files to extract connection parameters
  */
 
-const SONIC_PI_LOG_DIR = path.join(os.homedir(), '.sonic-pi', 'log');
+/**
+ * Get the Sonic Pi log directory
+ * @param {string} [customLogDir] - Optional custom log directory for testing
+ * @returns {string} Path to log directory
+ */
+export function getSonicPiLogDir(customLogDir) {
+  return customLogDir || path.join(os.homedir(), '.sonic-pi', 'log');
+}
 
 /**
  * Parse Sonic Pi v3.x server-output.log file
+ * @param {string} [logDir] - Optional custom log directory
  * @returns {Object|null} { listenPort: number, oscCuesPort: number, version: string } or null
  */
-function parseV3Log() {
+function parseV3Log(logDir) {
+  const SONIC_PI_LOG_DIR = getSonicPiLogDir(logDir);
   const logPath = path.join(SONIC_PI_LOG_DIR, 'server-output.log');
 
   if (!fs.existsSync(logPath)) {
@@ -47,7 +56,7 @@ function parseV3Log() {
       }
     }
 
-    if (listenPort) {
+    if (listenPort !== null) {
       return {
         listenPort,
         oscCuesPort: oscCuesPort || 4560, // default fallback
@@ -65,9 +74,11 @@ function parseV3Log() {
 
 /**
  * Parse Sonic Pi v4+ spider.log file
+ * @param {string} [logDir] - Optional custom log directory
  * @returns {Object|null} { serverPort: number, token: number, version: string } or null
  */
-function parseV4Log() {
+function parseV4Log(logDir) {
+  const SONIC_PI_LOG_DIR = getSonicPiLogDir(logDir);
   const logPath = path.join(SONIC_PI_LOG_DIR, 'spider.log');
 
   if (!fs.existsSync(logPath)) {
@@ -121,17 +132,18 @@ function parseV4Log() {
 /**
  * Parse Sonic Pi logs and return connection parameters
  * Tries v4 first, falls back to v3
+ * @param {string} [logDir] - Optional custom log directory for testing
  * @returns {Object|null} Connection parameters or null if parsing failed
  */
-export function parseSonicPiLog() {
+export function parseSonicPiLog(logDir) {
   // Try v4 first
-  const v4Params = parseV4Log();
+  const v4Params = parseV4Log(logDir);
   if (v4Params) {
     return v4Params;
   }
 
   // Fall back to v3
-  const v3Params = parseV3Log();
+  const v3Params = parseV3Log(logDir);
   if (v3Params) {
     return v3Params;
   }
@@ -141,8 +153,10 @@ export function parseSonicPiLog() {
 
 /**
  * Check if Sonic Pi log directory exists
+ * @param {string} [logDir] - Optional custom log directory for testing
  * @returns {boolean}
  */
-export function logDirectoryExists() {
+export function logDirectoryExists(logDir) {
+  const SONIC_PI_LOG_DIR = getSonicPiLogDir(logDir);
   return fs.existsSync(SONIC_PI_LOG_DIR);
 }

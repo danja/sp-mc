@@ -5,11 +5,12 @@ import { parseSonicPiLog } from './log-parser.js';
  * Client for communicating with Sonic Pi via OSC
  */
 export class SonicPiClient {
-  constructor() {
+  constructor(options = {}) {
     this.udpPort = null;
     this.params = null;
     this.isInitialized = false;
     this.clientId = 'SONIC_PI_NODE_MCP';
+    this.logDir = options.logDir; // Optional log directory for testing
   }
 
   /**
@@ -18,7 +19,7 @@ export class SonicPiClient {
    */
   async initialize() {
     // Parse log files to get connection parameters
-    this.params = parseSonicPiLog();
+    this.params = parseSonicPiLog(this.logDir);
 
     if (!this.params) {
       return 'Error: Could not parse Sonic Pi log files. Make sure Sonic Pi is running.';
@@ -154,7 +155,14 @@ export class SonicPiClient {
    */
   close() {
     if (this.udpPort) {
-      this.udpPort.close();
+      try {
+        this.udpPort.close();
+      } catch (error) {
+        // Ignore "Not running" errors - port is already closed
+        if (error.message !== 'Not running') {
+          throw error;
+        }
+      }
       this.isInitialized = false;
     }
   }

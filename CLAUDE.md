@@ -39,9 +39,18 @@ Contains example Sonic Pi Ruby code files (e.g., `hip.rb`) demonstrating:
 
 ### Setup
 ```bash
-cd mcp
 npm install
 ```
+
+### Testing
+```bash
+npm test              # Run tests (mock mode)
+npm run test:watch   # Run tests in watch mode
+npm run test:mock    # Explicitly use mock Sonic Pi
+npm run test:real    # Test against real Sonic Pi (requires Sonic Pi running)
+```
+
+Test files are located in `mcp/*.test.js` with helpers in `test/helpers/`. Tests can run against either a mock Sonic Pi server or a real installation via the `USE_MOCK_SONIC_PI` environment variable.
 
 ### Running the MCP Server
 The server is designed to run via stdio transport (not directly):
