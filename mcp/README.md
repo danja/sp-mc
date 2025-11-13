@@ -34,7 +34,7 @@ Edit `~/.claude.json` and update the Sonic Pi MCP server configuration:
           "type": "stdio",
           "command": "node",
           "args": [
-            "/path/to/sonic-pi-mcp/mcp/server.js"
+            "/path/to/sp-mcp/mcp/server.js"
           ],
           "env": {}
         }

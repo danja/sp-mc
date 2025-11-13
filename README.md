@@ -1,4 +1,4 @@
-# sonic-pi-mcp
+# sp-mc
 
 This connects any MCP client with [Sonic Pi](https://sonic-pi.net/) enabling you to create music with English.
 
@@ -14,6 +14,14 @@ So far only tested on a Linux system with Claude Code.
 - Direct OSC communication with Sonic Pi (no psonic dependency)
 - Supports both Sonic Pi v3.x and v4.x
 - Automatic port detection from Sonic Pi log files
+
+The server provides five tools:
+
+- `initialize_sonic_pi` - Initialize connection to Sonic Pi
+- `play_music` - Execute Sonic Pi code
+- `stop_music` - Stop all playback
+- `get_beat_pattern` - Get beat patterns (blues, rock, hiphop, electronic)
+- `make_acid` - Generate an Acid House style track
 
 ### Prerequisites
 
@@ -31,6 +39,11 @@ npm install
 ```
 
 #### Configure MCP Connection
+
+The following should set things up:
+```sh
+claude mcp add sp-mcp npx '@sp-mcp/mcp@latest'
+```
 
 eg. in `~/.claude.json`:
 ```json
