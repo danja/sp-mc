@@ -188,19 +188,29 @@ function parseSample(line, loopName, context) {
   const opts = parseHashArgs(match[2]);
   const drum = mapSampleToDrum(sampleName);
   const notes = drum ? [drum.midi] : [60]; // fallback middle C for non-drums
+  const baseDuration =
+    clampDuration(opts.release ?? DEFAULT_DURATION_BEATS) ?? DEFAULT_DURATION_BEATS;
+  const minDrumDuration = drum
+    ? {
+        hat_closed: 0.2,
+        hat_open: 0.5,
+        cymbal: 0.5,
+        ride: 0.5,
+        snare: 0.2,
+        clap: 0.2,
+      }[drum.id] ?? 0.1
+    : 0;
+  const durationBeats = Math.max(baseDuration, minDrumDuration);
+  const durationSec = durationBeats * (60 / context.bpm);
   return {
     type: 'note',
     notes,
     instrumentId: drum ? `drum:${drum.id}` : `sample:${sampleName}`,
     isPercussion: Boolean(drum),
     startBeat: context.time,
-    durationBeats: clampDuration(opts.release ?? DEFAULT_DURATION_BEATS) ?? DEFAULT_DURATION_BEATS,
+    durationBeats,
     startSec: context.timeSec,
-    durationSec:
-      clampDuration(opts.release ?? DEFAULT_DURATION_BEATS) === null
-        ? null
-        : (clampDuration(opts.release ?? DEFAULT_DURATION_BEATS) ?? DEFAULT_DURATION_BEATS) *
-          (60 / context.bpm),
+    durationSec: durationBeats ? durationSec : null,
     velocity: velocityFromAmp(opts.amp) ?? context.defaults.velocity,
     loopName,
     bpm: context.bpm,

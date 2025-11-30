@@ -82,7 +82,9 @@ export function chordToMidis(rootSym, quality) {
 
 export function velocityFromAmp(amp) {
   if (amp === undefined || amp === null) return null;
-  const v = Math.max(0, Math.min(amp, 2)); // clamp mildly
+  const num = typeof amp === 'number' ? amp : parseFloat(amp);
+  if (!Number.isFinite(num)) return null;
+  const v = Math.max(0, Math.min(num, 2)); // clamp mildly
   return Math.max(0.05, Math.min(1, v / 2 + 0.5));
 }
 
